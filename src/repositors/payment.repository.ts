@@ -1,6 +1,6 @@
 import { connection } from '../config/database/data.connection';
 import { ResultSetHeader, RowDataPacket} from 'mysql2'
-import { IWebHookPayload, ITrasintion } from "../interfaces/webhook.interface";
+import { IWebHookPayload, ITrasintion } from "../interfaces/payment.interface";
 
 export class PaymentRepository {
     async getAll() {
@@ -37,6 +37,6 @@ export class PaymentRepository {
             transition: transition,
             time: time
         }
-
     }
+
 }
