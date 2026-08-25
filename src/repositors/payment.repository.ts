@@ -28,13 +28,14 @@ export class PaymentRepository {
             second: '2-digit'
         });
 
-        const [newPayment] = await connection.promise().query<ResultSetHeader>(
+        const [payment] = await connection.promise().query<ResultSetHeader>(
             'INSERT INTO payments (amount, status, time) VALUES (?, ?, ?)',
             [transintion.userId, transintion.amount, transintion.status, time]
         ) 
 
         return {
-            id: transintion.userId,
+            id: payment.insertId,
+            userId: transintion.userId,
             amount: transintion.amount,
             status: transintion.status,
             time: time
@@ -43,16 +44,16 @@ export class PaymentRepository {
 
     async update(webhook: IWebHookPayload) {
         const up_payment = await connection.promise().query(
-            'UPDATE payments SET transintionId=? webhook=?',
-            [webhook.transintionId, webhook.userId,webhook.amount, webhook.status]
+            'UPDATE payments SET transintionId=?, userId=?, amount=?, status=? WHERE transintionId=?',
+            [webhook.transintionId, webhook.userId, webhook.amount, webhook.status]
         )
 
         return up_payment;
     }
 
     async delete(webhook: IWebHookPayload) {
-        const cancel =await connection.promise().query(
-            'DELETE payments WHERE transintionId=?',
+        const cancel = await connection.promise().query(
+            'DELETE FROM payments WHERE transintionId=?',
             [webhook.transintionId]
         )
 
