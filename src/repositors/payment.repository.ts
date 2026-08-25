@@ -29,7 +29,7 @@ export class PaymentRepository {
         });
 
         const [payment] = await connection.promise().query<ResultSetHeader>(
-            'INSERT INTO payments (amount, status, time) VALUES (?, ?, ?, ?)',
+            'INSERT INTO payments (userId, amount, status, time) VALUES (?, ?, ?, ?)',
             [transintion.userId, transintion.amount, transintion.status, time]
         ) 
 
