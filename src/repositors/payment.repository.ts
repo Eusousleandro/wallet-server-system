@@ -1,42 +1,62 @@
 import { connection } from '../config/database/data.connection';
 import { ResultSetHeader, RowDataPacket} from 'mysql2'
-import { ITrasintion } from "../interfaces/payment.interface";
+import { IWebHookPayload, ITrasintion } from "../interfaces/payment.interface";
 
 export class PaymentRepository {
     async getAll() {
-        const [payments] = await connection.promise().query<RowDataPacket>(
+        const [payments] = await connection.promise().query<RowDataPacket[]>(
            'SELECT * FROM payments'
         );
 
         return payments;
     }
 ;
-    async getById(id: number) {
+    async getById(webhook: IWebHookPayload) {
         const payment = await connection.promise().query(
             'SELECT * FROM payments WHERE id=?',
-            [id]
+            [webhook.transintionId]
         )
 
         return payment;
 
     }
 
-    async create(transition: ITrasintion) {
+    async create(transintion: ITrasintion) {
         const time = new Date().toLocaleTimeString('pt-br', {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit'
         });
 
-        const [newPayment] = await this.connection.promise().query<ResultSetHeader>(
-            [webhook, transition, time]
+        const [newPayment] = await connection.promise().query<ResultSetHeader>(
+            'INSERT INTO payments (amount, status, time) VALUES (?, ?, ?)',
+            [transintion.userId, transintion.amount, transintion.status, time]
         ) 
 
         return {
-            amount: transition.amount,
-            status: transition.status
+            id: transintion.userId,
+            amount: transintion.amount,
+            status: transintion.status,
             time: time
         }
+    }
+
+    async update(webhook: IWebHookPayload) {
+        const up_payment = await connection.promise().query(
+            'UPDATE payments SET transintionId=? webhook=?',
+            [webhook.transintionId, webhook.userId,webhook.amount, webhook.status]
+        )
+
+        return up_payment;
+    }
+
+    async delete(webhook: IWebHookPayload) {
+        const cancel =await connection.promise().query(
+            'DELETE payments WHERE transintionId=?',
+            [webhook.transintionId]
+        )
+
+        return cancel;
     }
 
 }
