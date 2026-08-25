@@ -25,7 +25,7 @@ export class PaymentService {
         return payment;
     }
 
-    public async crestes(transintion: ITrasintion) {
+    public async created(transintion: ITrasintion) {
         if(!transintion.amount || transintion.amount <= 0) {
             throw new Error('Invalid payment amount')
         }

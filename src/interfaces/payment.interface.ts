@@ -1,12 +1,12 @@
 export interface IWebHookPayload {
-    transintionId: string;
+    transactionId: string;
     userId: number;
     amount: number;
     status: 'PAID' | 'PENDING' | 'FALIED';
 
 }
 
-export interface ITrasintion {
+export interface ITransaction {
     id: string;
     userId: number;
     amount: number;
