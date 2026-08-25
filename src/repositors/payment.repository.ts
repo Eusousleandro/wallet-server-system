@@ -29,7 +29,7 @@ export class PaymentRepository {
         });
 
         const [payment] = await connection.promise().query<ResultSetHeader>(
-            'INSERT INTO payments (amount, status, time) VALUES (?, ?, ?)',
+            'INSERT INTO payments (amount, status, time) VALUES (?, ?, ?, ?)',
             [transintion.userId, transintion.amount, transintion.status, time]
         ) 
 
@@ -45,7 +45,7 @@ export class PaymentRepository {
     async update(webhook: IWebHookPayload) {
         const up_payment = await connection.promise().query(
             'UPDATE payments SET transintionId=?, userId=?, amount=?, status=? WHERE transintionId=?',
-            [webhook.transintionId, webhook.userId, webhook.amount, webhook.status]
+            [webhook.transintionId, webhook.userId, webhook.amount, webhook.status, webhook.transintionId]
         )
 
         return up_payment;
