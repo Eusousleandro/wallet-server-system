@@ -1,6 +1,6 @@
 import { connection } from '../config/database/data.connection';
 import { ResultSetHeader, RowDataPacket} from 'mysql2'
-import { IWebHookPayload, ITrasintion } from "../interfaces/payment.interface";
+import { ITrasintion } from "../interfaces/payment.interface";
 
 export class PaymentRepository {
     async getAll() {
@@ -21,7 +21,7 @@ export class PaymentRepository {
 
     }
 
-    async create(webhook: IWebHookPayload, transition: ITrasintion) {
+    async create(transition: ITrasintion) {
         const time = new Date().toLocaleTimeString('pt-br', {
             hour: '2-digit',
             minute: '2-digit',
@@ -33,8 +33,8 @@ export class PaymentRepository {
         ) 
 
         return {
-            webhook: webhook,
-            transition: transition,
+            amount: transition.amount,
+            status: transition.status
             time: time
         }
     }
