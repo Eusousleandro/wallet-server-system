@@ -11,10 +11,10 @@ export class PaymentRepository {
         return payments;
     }
 ;
-    async getById(webhook: IWebHookPayload) {
+    async getById(transactionId: string) {
         const [payment] = await connection.promise().query(
             'SELECT * FROM payments WHERE id=?',
-            [webhook.transactionId]
+            [transactionId]
         )
 
         return payment;
@@ -42,19 +42,19 @@ export class PaymentRepository {
         }
     }
 
-    async update(webhook: IWebHookPayload) {
+    async update(transactionId: string, webhook: IWebHookPayload) {
         const [up_payment] = await connection.promise().query(
             'UPDATE payments SET transactionId=?, userId=?, amount=?, status=? WHERE transintionId=?',
-            [webhook.transactionId, webhook.userId, webhook.amount, webhook.status, webhook.transactionId]
+            [transactionId, webhook.transactionId, webhook.userId, webhook.amount, webhook.status, webhook.transactionId]
         )
 
         return up_payment;
     }
 
-    async delete(webhook: IWebHookPayload) {
+    async delete(transactionId: string) {
         const [cancel] = await connection.promise().query(
             'DELETE FROM payments WHERE transactionId=?',
-            [webhook.transactionId]
+            [transactionId]
         )
 
         return cancel;

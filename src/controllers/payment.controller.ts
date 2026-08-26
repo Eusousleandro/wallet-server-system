@@ -25,14 +25,9 @@ export class PaymentController {
     public async getById(request: Request, response: Response) {
         try {
 
-            const webhookData: IWebHookPayload = {
-                transactionId: request.params.id,
-                userId: request.body.userId,
-                amount: request.body.amount,
-                status: request.body.status
-            }
+            const { id }= request.params;
 
-            const payment = await this.paymentServive.findById(webhookData);
+            const payment = await this.paymentServive.findById(id);
             response.status(200).json({
                 error: false,
                 payment: payment
@@ -65,6 +60,7 @@ export class PaymentController {
 
     public async update(request: Request, response:Response) {
         try {
+            const { id } = request.params;
             const bodyPayment: IWebHookPayload = request.body;
             const payUpdate = await this.paymentServive.updated(bodyPayment);
             response.status(200).json({
@@ -83,14 +79,9 @@ export class PaymentController {
     public async delete(request: Request, response: Response): Promise<void> {
         try {
             
-            const webhookData: IWebHookPayload = {
-                transactionId: request.params.transintionId,
-                userId: request.body.userId,
-                amount: request.body.amount,
-                status: request.body.status
-            }
+            const { id } = request.params;
 
-            const deletePay = await this.paymentServive.deleted(webhookData);
+            const deletePay = await this.paymentServive.deleted(id);
             response.status(200).json({
                 error: false,
                 payment: deletePay

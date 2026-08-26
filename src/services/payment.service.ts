@@ -15,8 +15,8 @@ export class PaymentService {
         return payments;
     }
 
-    public async findById(webhook: IWebHookPayload) {
-        const payment = await this.paymentRepository.getById(webhook);
+    public async findById(transactionId: string) {
+        const payment = await this.paymentRepository.getById(transactionId);
 
         if(!payment) {
             throw new Error('No found payment')
@@ -38,8 +38,8 @@ export class PaymentService {
         return {'message': 'Payment created carried out with sucessfully'};
     }
 
-    public async updated(webhook: IWebHookPayload) {
-        const update_pay = await this.paymentRepository.update(webhook)
+    public async updated(transactionId: string, webhook: IWebHookPayload) {
+        const update_pay = await this.paymentRepository.update(transactionId, webhook)
 
         if(!update_pay) {
            throw new Error('Paymemt to update not found')
@@ -48,8 +48,8 @@ export class PaymentService {
         return {'message': 'Payment update corried out with sucessfully'}
     } 
     
-    public async deleted(webhook: IWebHookPayload) {
-        const delete_pay = await this.paymentRepository.delete(webhook);
+    public async deleted(transactionId: string) {
+        const delete_pay = await this.paymentRepository.delete(transactionId);
 
         if(!delete_pay) {
             throw new Error('Payment to delete not found')
