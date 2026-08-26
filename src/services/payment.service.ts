@@ -1,4 +1,4 @@
-import { ITrasintion, IWebHookPayload } from '../interfaces/payment.interface';
+import { ITransaction, IWebHookPayload } from '../interfaces/payment.interface';
 import { PaymentRepository } from '../repositors/payment.repository'
 
 export class PaymentService {
@@ -15,7 +15,7 @@ export class PaymentService {
         return payments;
     }
 
-    public async FindById(webhook: IWebHookPayload) {
+    public async findById(webhook: IWebHookPayload) {
         const payment = await this.paymentRepository.getById(webhook);
 
         if(!payment) {
@@ -25,11 +25,11 @@ export class PaymentService {
         return payment;
     }
 
-    public async created(transintion: ITrasintion) {
-        if(!transintion.amount || transintion.amount <= 0) {
+    public async created(transaction: ITransaction) {
+        if(!transaction.amount || transaction.amount <= 0) {
             throw new Error('Invalid payment amount')
         }
-        const newPayment = await this.paymentRepository.create(transintion)
+        const newPayment = await this.paymentRepository.create(transaction)
 
         if (!newPayment) {
             throw new Error('Payment create to FALID');

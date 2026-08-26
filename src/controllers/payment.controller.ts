@@ -32,7 +32,7 @@ export class PaymentController {
                 status: request.body.status
             }
 
-            const payment = await this.paymentServive.FindById(webhookData);
+            const payment = await this.paymentServive.findById(webhookData);
             response.status(200).json({
                 error: false,
                 payment: payment
